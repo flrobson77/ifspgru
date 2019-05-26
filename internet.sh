@@ -1,10 +1,12 @@
 #!/bin/bash
 ### SCRIPT LIBERACAO DE PACOTES
-### Versao 1.0
+### Versao 1.1
 ### Criado em: 21/10/2018
+### Atualizado em: 26/05/2019
 ### Elaborado por: Prof. Robson
 
 #Parametros Iniciais
+ETH="enp0s3"
 LAN="10.0.0.0/24"
 
 # Limpa Regras
@@ -21,7 +23,7 @@ case $1 in
    start)
         echo -e "\nAtivando a internet para rede local"
         echo 1 > /proc/sys/net/ipv4/ip_forward
-        iptables -t nat -A POSTROUTING -s $LAN -o enp0s8 -j MASQUERADE
+        iptables -t nat -A POSTROUTING -s $LAN -o $ETH -j MASQUERADE
         sleep 3
         clear
         echo -e "\nLiberando a passagem de pacotes"
@@ -29,7 +31,7 @@ case $1 in
      stop)
         echo "Desativando a internet para rede local..."
         echo 0 > /proc/sys/net/ipv4/ip_forward
-        iptables -t nat -D POSTROUTING -s $LAN -o enp0s8 -j MASQUERADE
+        iptables -t nat -D POSTROUTING -s $LAN -o $ETH -j MASQUERADE
         sleep 3
         clear
         echo -e "\nBloqueado a passagem de pacotes"
